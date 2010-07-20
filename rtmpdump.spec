@@ -1,7 +1,7 @@
 
 %define name	rtmpdump
 %define version	2.3
-%define rel	1
+%define rel	2
 
 %define major	0
 %define libname	%mklibname rtmp %major
@@ -68,6 +68,8 @@ Shared library for handling RTMP streams.
 Summary:	Development files for librtmp
 Group:		Development/C
 Requires:	%{libname} = %{version}
+Provides:	rtmp-devel = %{version}-%{release}
+Provides:	librtmp-devel = %{version}-%{release}
 
 %description -n %devname
 The development files that are needed to build software depending
