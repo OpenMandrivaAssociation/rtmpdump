@@ -1,7 +1,7 @@
 
 %define name	rtmpdump
 %define version	2.3
-%define rel	2
+%define rel	3
 
 %define major	0
 %define libname	%mklibname rtmp %major
@@ -70,6 +70,7 @@ Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	rtmp-devel = %{version}-%{release}
 Provides:	librtmp-devel = %{version}-%{release}
+Requires:	openssl-devel
 
 %description -n %devname
 The development files that are needed to build software depending
