@@ -14,6 +14,10 @@
 %if %with plf
 %define build_crypto 1
 %define distsuffix plf
+%if %mdvver >= 201100
+# make EVR of plf build higher than regular to allow update, needed with rpm5 mkrel
+%define extrarelsuffix plf
+%endif
 %endif
 
 %if !%build_crypto
@@ -30,7 +34,7 @@ which some people may consider to be a DRM protection mechanism.
 Summary:	Toolkit for RTMP streams
 Name:		%{name}
 Version:	%{version}
-Release:	%mkrel %rel
+Release:	%mkrel %rel%{?extrarelsuffix}
 URL:		http://rtmpdump.mplayerhq.hu/
 Source:		http://rtmpdump.mplayerhq.hu/download/%name-%version.tgz
 # fix pkgconfig issues
