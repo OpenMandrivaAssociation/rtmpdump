@@ -29,7 +29,7 @@ which some people may consider to be a DRM protection mechanism.
 Summary:	Toolkit for RTMP streams
 Name:		rtmpdump
 Version:	2.3
-Release:	5%{?extrarelsuffix}
+Release:	6%{?extrarelsuffix}
 URL:		http://rtmpdump.mplayerhq.hu/
 Source:		http://rtmpdump.mplayerhq.hu/download/%{name}-%{version}.tgz
 # fix pkgconfig issues
@@ -68,6 +68,8 @@ Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	rtmp-devel = %{version}-%{release}
 Provides:	librtmp-devel = %{version}-%{release}
+#gw it is in the pkgconfig file:
+Requires:	openssl-devel
 
 %description -n %{devname}
 The development files that are needed to build software depending
