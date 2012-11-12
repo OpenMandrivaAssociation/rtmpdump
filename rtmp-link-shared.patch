@@ -1,0 +1,55 @@
+diff -Nurpa -x '*~' -x '*.orig' -x '*.rej' -x '*.swp' rtmpdump-2.3//Makefile newdir/Makefile
+--- rtmpdump-2.3//Makefile	2010-07-19 23:57:29.793541239 +0300
++++ rtmpdump-2.3/Makefile	2010-07-19 23:58:04.855421478 +0300
+@@ -31,7 +31,7 @@ MANDIR=$(DESTDIR)$(mandir)
+ 
+ LIBS_posix=
+ LIBS_mingw=-lws2_32 -lwinmm -lgdi32
+-LIBS=$(CRYPTO_LIB) -lz $(LIBS_$(SYS)) $(XLIBS)
++LIBS=-L librtmp -lrtmp $(CRYPTO_LIB) -lz $(LIBS_$(SYS)) $(XLIBS)
+ 
+ THREADLIB_posix=-lpthread
+ THREADLIB_mingw=
+@@ -45,9 +45,11 @@ EXT_posix=
+ EXT_mingw=.exe
+ EXT=$(EXT_$(SYS))
+ 
+-all:	$(LIBRTMP) progs
++PROGS=rtmpdump rtmpgw rtmpsrv rtmpsuck
+ 
+-progs:	rtmpdump rtmpgw rtmpsrv rtmpsuck
++all:	$(LIBRTMP) $(PROGS)
++
++$(PROGS): $(LIBRTMP)
+ 
+ install:	progs
+ 	-mkdir -p $(BINDIR) $(MANDIR)/man1 $(MANDIR)/man8
+@@ -65,20 +67,17 @@ FORCE:
+ $(LIBRTMP): FORCE
+ 	@cd librtmp; $(MAKE) all
+ 
+-# note: $^ is GNU Make's equivalent to BSD $>
+-# we use both since either make will ignore the one it doesn't recognize
+-
+-rtmpdump: rtmpdump.o $(LIBRTMP)
+-	$(CC) $(LDFLAGS) $^ $> -o $@$(EXT) $(LIBS)
++rtmpdump: rtmpdump.o
++	$(CC) $(LDFLAGS) -o $@$(EXT) $@.o $(LIBS)
+ 
+-rtmpsrv: rtmpsrv.o thread.o $(LIBRTMP)
+-	$(CC) $(LDFLAGS) $^ $> -o $@$(EXT) $(SLIBS)
++rtmpsrv: rtmpsrv.o thread.o
++	$(CC) $(LDFLAGS) -o $@$(EXT) $@.o thread.o $(SLIBS)
+ 
+-rtmpsuck: rtmpsuck.o thread.o $(LIBRTMP)
+-	$(CC) $(LDFLAGS) $^ $> -o $@$(EXT) $(SLIBS)
++rtmpsuck: rtmpsuck.o thread.o
++	$(CC) $(LDFLAGS) -o $@$(EXT) $@.o thread.o $(SLIBS)
+ 
+-rtmpgw: rtmpgw.o thread.o $(LIBRTMP)
+-	$(CC) $(LDFLAGS) $^ $> -o $@$(EXT) $(SLIBS)
++rtmpgw: rtmpgw.o thread.o
++	$(CC) $(LDFLAGS) -o $@$(EXT) $@.o thread.o $(SLIBS)
+ 
+ rtmpgw.o: rtmpgw.c $(INCRTMP) Makefile
+ rtmpdump.o: rtmpdump.c $(INCRTMP) Makefile
