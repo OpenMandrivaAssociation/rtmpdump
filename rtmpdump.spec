@@ -1,5 +1,10 @@
+
+%define name	rtmpdump
+%define version	2.3
+%define rel	5
+
 %define major	0
-%define libname	%mklibname rtmp %{major}
+%define libname	%mklibname rtmp %major
 %define devname	%mklibname rtmp -d
 
 %define build_crypto 0
@@ -27,11 +32,11 @@ which some people may consider to be a DRM protection mechanism.
 %endif
 
 Summary:	Toolkit for RTMP streams
-Name:		rtmpdump
-Version:	2.3
-Release:	6%{?extrarelsuffix}
+Name:		%{name}
+Version:	%{version}
+Release:	%mkrel %rel%{?extrarelsuffix}
 URL:		http://rtmpdump.mplayerhq.hu/
-Source:		http://rtmpdump.mplayerhq.hu/download/%{name}-%{version}.tgz
+Source:		http://rtmpdump.mplayerhq.hu/download/%name-%version.tgz
 # fix pkgconfig issues
 Patch0:		rtmp-pkgconfig-hardcoded.patch
 Patch1:		rtmp-pkgconfig-private.patch
@@ -42,36 +47,36 @@ Patch3:		rtmp-link-shared.patch
 Patch4:		rtmp-link-shared2.patch
 License:	GPLv2+
 Group:		Video
+BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	zlib-devel
 %if %build_crypto
 BuildRequires:	openssl-devel
 %endif
-Requires:	%{libname} >= %{version}
+Requires:	%libname >= %{version}
 
 %description
 rtmpdump is a toolkit for RTMP streams.
 
 %notice
 
-%package -n %{libname}
+%package -n %libname
 Summary:	Shared library: librtmp
 Group:		System/Libraries
 
-%description -n %{libname}
+%description -n %libname
 Shared library for handling RTMP streams.
 
 %notice
 
-%package -n %{devname}
+%package -n %devname
 Summary:	Development files for librtmp
 Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	rtmp-devel = %{version}-%{release}
 Provides:	librtmp-devel = %{version}-%{release}
-#gw it is in the pkgconfig file:
 Requires:	openssl-devel
 
-%description -n %{devname}
+%description -n %devname
 The development files that are needed to build software depending
 on librtmp.
 
@@ -80,7 +85,7 @@ on librtmp.
 %apply_patches
 
 %build
-%make XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
+%make XCFLAGS="%optflags" LDFLAGS="%ldflags" \
 %if !%build_crypto
 	CRYPTO=
 %endif
@@ -91,8 +96,11 @@ rm -rf %{buildroot}
 %makeinstall_std prefix=%{_prefix} libdir=%{_libdir} mandir=%{_mandir}
 rm %{buildroot}%{_libdir}/librtmp.a
 
+%clean
+rm -rf %{buildroot}
 
 %files
+%defattr(-,root,root)
 %doc README ChangeLog
 %{_bindir}/rtmpdump
 %{_bindir}/rtmpgw
@@ -102,12 +110,40 @@ rm %{buildroot}%{_libdir}/librtmp.a
 %{_mandir}/man8/rtmpgw.8*
 
 %files -n %libname
+%defattr(-,root,root)
 %{_libdir}/librtmp.so.%{major}*
 
 %files -n %devname
+%defattr(-,root,root)
 %dir %{_includedir}/librtmp
 %{_includedir}/librtmp/*.h
 %{_libdir}/librtmp.so
 %{_libdir}/pkgconfig/librtmp.pc
 %{_mandir}/man3/librtmp.3*
+
+
+
+%changelog
+* Mon Feb 20 2012 abf
+- The release updated by ABF
+
+* Thu May 05 2011 Oden Eriksson <oeriksson@mandriva.com> 2.3-4mdv2011.0
++ Revision: 669455
+- mass rebuild
+
+  + Anssi Hannula <anssi@mandriva.org>
+    - plf: append "plf" to Release on cooker to make plf build have higher EVR
+      again with the rpm5-style mkrel now in use
+
+* Wed Jul 21 2010 Götz Waschk <waschk@mandriva.org> 2.3-3mdv2011.0
++ Revision: 556312
+- fix devel dep
+
+* Tue Jul 20 2010 Anssi Hannula <anssi@mandriva.org> 2.3-2mdv2011.0
++ Revision: 555462
+- add missing provides to the devel package
+
+* Mon Jul 19 2010 Anssi Hannula <anssi@mandriva.org> 2.3-1mdv2011.0
++ Revision: 555024
+- initial Mandriva release
 
