@@ -1,7 +1,7 @@
 
 %define name	rtmpdump
 %define version	2.3
-%define rel	5
+%define rel	7
 
 %define major	0
 %define libname	%mklibname rtmp %major
