@@ -76,7 +76,7 @@ on librtmp.
 %apply_patches
 
 %build
-%make XCFLAGS="%optflags" LDFLAGS="%ldflags" \
+%make CC=%{__cc} XCFLAGS="%optflags" LDFLAGS="%ldflags" \
 %if !%build_crypto
 	CRYPTO=
 %endif
