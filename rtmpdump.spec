@@ -1,7 +1,4 @@
-
-%define name	rtmpdump
 %define snap 20150202
-%define version	2.4
 %define rel	1
 
 %define major	1
@@ -33,8 +30,10 @@ which some people may consider to be a DRM protection mechanism.
 %endif
 
 Summary:	Toolkit for RTMP streams
-Name:		%{name}
-Version:	%{version}
+Name:		rtmpdump
+Version:	2.4
+License:      GPLv2+
+Group:                Video
 %if %{snap}
 Release:	0.git%{snap}.%{rel}%{?extrarelsuffix}
 %else
@@ -52,38 +51,32 @@ Source0:	http://rtmpdump.mplayerhq.hu/download/%{name}-%{version}.tgz
 Patch1:		rtmp-pkgconfig-private.patch
 # these do not belong to sbindir
 Patch2:		rtmp-no-sbindir.patch
-License:	GPLv2+
-Group:		Video
-BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(zlib)
 %if %build_crypto
-BuildRequires:	openssl-devel
+BuildRequires:	pkgconfig(openssl)
 %endif
-Requires:	%libname >= %{version}
 
 %description
 rtmpdump is a toolkit for RTMP streams.
 
 %notice
 
-%package -n %libname
+%package -n %{libname}
 Summary:	Shared library: librtmp
 Group:		System/Libraries
 
-%description -n %libname
+%description -n %{libname}
 Shared library for handling RTMP streams.
 
 %notice
 
-%package -n %devname
+%package -n %{devname}
 Summary:	Development files for librtmp
 Group:		Development/C
-Requires:	%{libname} = %{version}
+Requires:	%{libname} = %{version}-%{release}
 Provides:	rtmp-devel = %{version}-%{release}
-Provides:	librtmp-devel = %{version}-%{release}
-Requires:	openssl-devel
 
-%description -n %devname
+%description -n %{devname}
 The development files that are needed to build software depending
 on librtmp.
 
@@ -96,22 +89,17 @@ on librtmp.
 %apply_patches
 
 %build
-%make XCFLAGS="%optflags" LDFLAGS="%ldflags" \
+%make CC=%{__cc} XCFLAGS="%optflags" LDFLAGS="%ldflags" \
 %if !%build_crypto
 	CRYPTO=
 %endif
 # empty line
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std prefix=%{_prefix} libdir=%{_libdir} mandir=%{_mandir}
 rm %{buildroot}%{_libdir}/librtmp.a
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc README ChangeLog
 %{_bindir}/rtmpdump
 %{_bindir}/rtmpgw
@@ -120,12 +108,10 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rtmpdump.1*
 %{_mandir}/man8/rtmpgw.8*
 
-%files -n %libname
-%defattr(-,root,root)
+%files -n %{libname}
 %{_libdir}/librtmp.so.%{major}*
 
-%files -n %devname
-%defattr(-,root,root)
+%files -n %{devname}
 %dir %{_includedir}/librtmp
 %{_includedir}/librtmp/*.h
 %{_libdir}/librtmp.so
