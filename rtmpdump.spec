@@ -1,9 +1,10 @@
 
 %define name	rtmpdump
-%define version	2.3
-%define rel	7
+%define snap 20150202
+%define version	2.4
+%define rel	1
 
-%define major	0
+%define major	1
 %define libname	%mklibname rtmp %major
 %define devname	%mklibname rtmp -d
 
@@ -34,17 +35,23 @@ which some people may consider to be a DRM protection mechanism.
 Summary:	Toolkit for RTMP streams
 Name:		%{name}
 Version:	%{version}
-Release:	%mkrel %rel%{?extrarelsuffix}
+%if %{snap}
+Release:	0.git%{snap}.%{rel}%{?extrarelsuffix}
+%else
+Release:	%rel%{?extrarelsuffix}
+%endif
 URL:		http://rtmpdump.mplayerhq.hu/
-Source:		http://rtmpdump.mplayerhq.hu/download/%name-%version.tgz
+%if %{snap}
+# rm -rf rtmpdump && git clone git://git.ffmpeg.org/rtmpdump && cd rtmpdump/
+# git archive --prefix=rtmpdump-$(date +%Y%m%d)/ --format=tar HEAD | xz > ../rtmpdump-$(date +%Y%m%d).tar.xz
+Source0:	%{name}-%{snap}.tar.xz
+%else
+Source0:	http://rtmpdump.mplayerhq.hu/download/%{name}-%{version}.tgz
+%endif
 # fix pkgconfig issues
-Patch0:		rtmp-pkgconfig-hardcoded.patch
 Patch1:		rtmp-pkgconfig-private.patch
 # these do not belong to sbindir
 Patch2:		rtmp-no-sbindir.patch
-# (from upstream) link progs against shared library
-Patch3:		rtmp-link-shared.patch
-Patch4:		rtmp-link-shared2.patch
 License:	GPLv2+
 Group:		Video
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -81,7 +88,11 @@ The development files that are needed to build software depending
 on librtmp.
 
 %prep
+%if %{snap}
+%setup -q -n %{name}-%{snap}
+%else
 %setup -q
+%endif
 %apply_patches
 
 %build
@@ -120,30 +131,4 @@ rm -rf %{buildroot}
 %{_libdir}/librtmp.so
 %{_libdir}/pkgconfig/librtmp.pc
 %{_mandir}/man3/librtmp.3*
-
-
-
-%changelog
-* Mon Feb 20 2012 abf
-- The release updated by ABF
-
-* Thu May 05 2011 Oden Eriksson <oeriksson@mandriva.com> 2.3-4mdv2011.0
-+ Revision: 669455
-- mass rebuild
-
-  + Anssi Hannula <anssi@mandriva.org>
-    - plf: append "plf" to Release on cooker to make plf build have higher EVR
-      again with the rpm5-style mkrel now in use
-
-* Wed Jul 21 2010 Götz Waschk <waschk@mandriva.org> 2.3-3mdv2011.0
-+ Revision: 556312
-- fix devel dep
-
-* Tue Jul 20 2010 Anssi Hannula <anssi@mandriva.org> 2.3-2mdv2011.0
-+ Revision: 555462
-- add missing provides to the devel package
-
-* Mon Jul 19 2010 Anssi Hannula <anssi@mandriva.org> 2.3-1mdv2011.0
-+ Revision: 555024
-- initial Mandriva release
 

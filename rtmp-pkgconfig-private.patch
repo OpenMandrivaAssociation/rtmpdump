@@ -1,15 +1,16 @@
-Index: librtmp/librtmp.pc.in
+Index: rtmpdump-20111228/librtmp/librtmp.pc.in
 ===================================================================
---- a/librtmp/librtmp.pc.in	(revision 546)
-+++ b/librtmp/librtmp.pc.in	(working copy)
-@@ -6,7 +6,8 @@
+--- rtmpdump-20111228/librtmp/librtmp.pc.in
++++ rtmpdump-20111228/librtmp/librtmp.pc.in	2011-12-28 21:23:19.631840533 +0100
+@@ -6,8 +6,8 @@
  Name: librtmp
  Description: RTMP implementation
  Version: @VERSION@
 -Requires: @CRYPTO_REQ@
 +Requires.private: @CRYPTO_REQ@
  URL: http://rtmpdump.mplayerhq.hu
--Libs: -L${libdir} -lrtmp -lz
-+Libs: -L${libdir} -lrtmp
-+Libs.private: -lz
+-Libs: -L${libdir} -lrtmp -lz @PUBLIC_LIBS@
+-Libs.private: @PRIVATE_LIBS@
++Libs: -L${libdir} -lrtmp @PUBLIC_LIBS@
++Libs.private: @PRIVATE_LIBS@ -lz 
  Cflags: -I${incdir}
