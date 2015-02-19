@@ -1,9 +1,9 @@
 %define snap 20150202
-%define rel	1
+%define rel 2
 
-%define major	1
-%define libname	%mklibname rtmp %major
-%define devname	%mklibname rtmp -d
+%define major 1
+%define libname %mklibname rtmp %major
+%define devname %mklibname rtmp -d
 
 %define build_crypto 0
 
@@ -32,8 +32,8 @@ which some people may consider to be a DRM protection mechanism.
 Summary:	Toolkit for RTMP streams
 Name:		rtmpdump
 Version:	2.4
-License:      GPLv2+
-Group:                Video
+License:	GPLv2+
+Group:		Video
 %if %{snap}
 Release:	0.git%{snap}.%{rel}%{?extrarelsuffix}
 %else
