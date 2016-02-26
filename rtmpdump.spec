@@ -90,7 +90,6 @@ on librtmp.
 
 %build
 %make CC=%{__cc} XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
-
 %if !%build_crypto
 	CRYPTO=
 %endif
