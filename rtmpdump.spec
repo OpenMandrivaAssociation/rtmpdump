@@ -1,5 +1,5 @@
-%define snap 20150202
-%define rel 2
+%define snap 20160226
+%define rel 3
 
 %define major 1
 %define libname %mklibname rtmp %major
@@ -89,7 +89,8 @@ on librtmp.
 %apply_patches
 
 %build
-%make CC=%{__cc} XCFLAGS="%optflags" LDFLAGS="%ldflags" \
+%make CC=%{__cc} XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
+
 %if !%build_crypto
 	CRYPTO=
 %endif
@@ -117,4 +118,3 @@ rm %{buildroot}%{_libdir}/librtmp.a
 %{_libdir}/librtmp.so
 %{_libdir}/pkgconfig/librtmp.pc
 %{_mandir}/man3/librtmp.3*
-
