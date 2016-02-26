@@ -1,5 +1,5 @@
 %define snap 20160226
-%define rel 3
+%define rel 4
 
 %define major 1
 %define libname %mklibname rtmp %major
@@ -75,6 +75,10 @@ Summary:	Development files for librtmp
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	rtmp-devel = %{version}-%{release}
+# FIXME remove once rpm's pkgconfig dependency generator has been fixed to
+# handle dependencies indicated in the *.pc files automatically
+Requires:	pkgconfig(libssl)
+Requires:	pkgconfig(libcrypto)
 
 %description -n %{devname}
 The development files that are needed to build software depending
