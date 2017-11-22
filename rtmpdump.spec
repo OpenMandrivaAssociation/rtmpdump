@@ -1,5 +1,5 @@
 %define snap 20160226
-%define rel 4
+%define rel 6
 
 %define major 1
 %define libname %mklibname rtmp %major
