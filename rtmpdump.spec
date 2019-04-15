@@ -1,11 +1,11 @@
-%define snap 20160226
-%define rel 6
+%define snap 20190415
+%define rel 1
 
 %define major 1
 %define libname %mklibname rtmp %major
 %define devname %mklibname rtmp -d
 
-%define build_crypto 0
+%define build_crypto 1
 
 %bcond_with plf
 
@@ -51,6 +51,8 @@ Source0:	http://rtmpdump.mplayerhq.hu/download/%{name}-%{version}.tgz
 Patch1:		rtmp-pkgconfig-private.patch
 # these do not belong to sbindir
 Patch2:		rtmp-no-sbindir.patch
+Patch3:		https://github.com/JudgeZarbi/RTMPDump-OpenSSL-1.1/commit/a5f4d8e3f5302b44e240ecf07f2a9525b5469dfb.patch
+Patch4:		https://github.com/JudgeZarbi/RTMPDump-OpenSSL-1.1/commit/1c745717ff7d7391266522705143298f3563ad40.patch
 BuildRequires:	pkgconfig(zlib)
 %if %build_crypto
 BuildRequires:	pkgconfig(openssl)
