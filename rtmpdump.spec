@@ -1,4 +1,4 @@
-%define snap 20190415
+%define snap 20190721
 %define rel 1
 
 %define major 1
