@@ -92,7 +92,7 @@ on librtmp.
 %else
 %setup -q
 %endif
-%apply_patches
+%autopatch -p1
 
 %build
 %make CC=%{__cc} XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
