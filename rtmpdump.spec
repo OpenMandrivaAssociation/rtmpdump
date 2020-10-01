@@ -1,5 +1,5 @@
 %define snap 20190721
-%define rel 1
+%define rel 2
 
 %define major 1
 %define libname %mklibname rtmp %major
@@ -95,14 +95,15 @@ on librtmp.
 %autopatch -p1
 
 %build
-%make CC=%{__cc} XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
+%set_build_flags
+%make_build CC=%{__cc} XCFLAGS="%{optflags}" LDFLAGS="%{ldflags}" \
 %if !%build_crypto
 	CRYPTO=
 %endif
 # empty line
 
 %install
-%makeinstall_std prefix=%{_prefix} libdir=%{_libdir} mandir=%{_mandir}
+%make_install prefix=%{_prefix} libdir=%{_libdir} mandir=%{_mandir}
 rm %{buildroot}%{_libdir}/librtmp.a
 
 %files
