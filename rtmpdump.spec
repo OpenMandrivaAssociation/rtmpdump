@@ -39,7 +39,7 @@ Release:	0.git%{snap}.%{rel}%{?extrarelsuffix}
 %else
 Release:	%rel%{?extrarelsuffix}
 %endif
-URL:		http://rtmpdump.mplayerhq.hu/
+URL:		https://rtmpdump.mplayerhq.hu/
 %if %{snap}
 # rm -rf rtmpdump && git clone git://git.ffmpeg.org/rtmpdump && cd rtmpdump/
 # git archive --prefix=rtmpdump-$(date +%Y%m%d)/ --format=tar HEAD | xz > ../rtmpdump-$(date +%Y%m%d).tar.xz
